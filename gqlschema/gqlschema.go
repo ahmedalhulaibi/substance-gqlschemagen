@@ -44,7 +44,7 @@ func GenerateGraphqlSchemaTypes(gqlObjectTypes map[string]substancegen.GenObject
 	for _, object := range gqlObjectTypes {
 		for _, propVal := range object.Properties {
 			if propVal.IsObjectType {
-				propVal.AltScalarType["gqlschema"] = propVal.ScalarNameUpper
+				propVal.AltScalarType["gqlschema"] = propVal.ScalarType
 			} else {
 				propVal.AltScalarType["gqlschema"] = graphqlDataTypes[propVal.ScalarType]
 			}
@@ -70,7 +70,7 @@ func GenerateGraphqlQueries(gqlObjectTypes map[string]substancegen.GenObjectType
 	for _, object := range gqlObjectTypes {
 		for _, propVal := range object.Properties {
 			if propVal.IsObjectType {
-				propVal.AltScalarType["gqlschema"] = propVal.ScalarNameUpper
+				propVal.AltScalarType["gqlschema"] = propVal.ScalarType
 			} else {
 				propVal.AltScalarType["gqlschema"] = graphqlDataTypes[propVal.ScalarType]
 			}
@@ -96,7 +96,7 @@ func GenerateGraphqlGetQueries(gqlObjectTypes map[string]substancegen.GenObjectT
 	for _, object := range gqlObjectTypes {
 		for _, propVal := range object.Properties {
 			if propVal.IsObjectType {
-				propVal.AltScalarType["gqlschema"] = propVal.ScalarNameUpper
+				propVal.AltScalarType["gqlschema"] = propVal.ScalarType
 			} else {
 				propVal.AltScalarType["gqlschema"] = graphqlDataTypes[propVal.ScalarType]
 			}
