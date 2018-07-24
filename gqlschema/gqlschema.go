@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"html/template"
 	"log"
+	"strings"
 
 	"github.com/ahmedalhulaibi/substance/substancegen"
 )
@@ -108,6 +109,11 @@ func GenerateGraphqlGetQueries(gqlObjectTypes map[string]substancegen.GenObjectT
 	}
 	//print schema
 	err1 := tmpl.Execute(buff, gqlObjectTypes)
+	var tmpbuff bytes.Buffer
+	tmpbuff.WriteString(strings.Replace(buff.String(), ", )", ")", 1))
+	buff.Reset()
+	*buff = tmpbuff
+	//fmt.Println(fixedstr)
 	if err1 != nil {
 		log.Fatal("Execute: ", err1)
 		return

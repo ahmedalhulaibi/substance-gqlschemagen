@@ -93,7 +93,7 @@ func TestGenerateGraphqlGetQueriesFunc(t *testing.T) {
 	# Customer returns first Customer in database table
 	Customer: Customer
 	# GetCustomer takes the properties of Customer as search parameters. It will return all Customer rows found that matches the search criteria. Null input paramters are valid.
-	GetCustomer(FirstName: String, ShoppingList: [String], ): [Customer]
+	GetCustomer(FirstName: String, ShoppingList: [String]): [Customer]
 `)
 
 	if buff.String() != expectedBuff.String() {
