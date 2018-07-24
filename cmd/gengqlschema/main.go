@@ -16,18 +16,18 @@ import (
 
 func main() {
 	helpText := `Usage: 
-		gengorm -db="dbtype" -cnstr="connection:string@locahost:9999 -file="outputFile.go"
+		gengqlschema -db="dbtype" -cnstr="connection:string@locahost:9999 -file="schema.graphql"
 			or
-		gengorm -jsonsrc="path-to-substance-objects.json -file="outputFile.go""
+		gengqlschema -jsonsrc="path-to-substance-objects.json -file="schema.graphql""
 			or
-		gengorm -file="outputFile.go"	<-- Defaults to -jsonsrc=substance-objects.json
+		gengqlschema -file="schema.graphql"	<-- Defaults to -jsonsrc=substance-objects.json
 			or
-		gengorm							<-- Default -jsonsrc=substance-objects.json and file=gengorm.go
+		gengqlschema							<-- Default -jsonsrc=substance-objects.json and file=schema.graphql
 `
 	dbtype := flag.String("db", "", "Database driver name.\nSupported databases types:\n\t- mysql\n\t- postgres \n\t- sqlite3\n")
 	connString := flag.String("cnstr", "", "Connection string to connect to database.")
 	jsonSourceFilePath := flag.String("jsonsrc", "substance-objects.json", "JSON substance-objects.json file describing the database objects. This can be used as an alternative to providing connection info.")
-	outputSrcFilePath := flag.String("file", "graphql.schema", "File to output graphql schema file. Defaults to graphql.schema . If file=\"\" outputs to stdout.")
+	outputSrcFilePath := flag.String("file", "schema.graphql", "File to output graphql schema file. Defaults to schema.graphql . If file=\"\" outputs to stdout.")
 	flag.Parse()
 
 	var objects map[string]substancegen.GenObjectType
