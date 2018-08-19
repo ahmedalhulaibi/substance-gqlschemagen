@@ -51,8 +51,34 @@ func GenerateGraphqlSchemaTypes(gqlObjectTypes map[string]substancegen.GenObject
 		}
 	}
 
-	tmpl := template.New("graphqlSchema")
+	tmpl := template.New("graphqlSchemaTypes")
 	tmpl, err := tmpl.Parse(graphqlSchemaTypesTemplate)
+	if err != nil {
+		log.Fatal("Parse: ", err)
+		return
+	}
+	//print schema
+	err1 := tmpl.Execute(buff, gqlObjectTypes)
+	if err1 != nil {
+		log.Fatal("Execute: ", err1)
+		return
+	}
+}
+
+/*GenerateGraphqlInputSchemaTypes generates graphql input types in graphql sstandard syntax*/
+func GenerateGraphqlInputSchemaTypes(gqlObjectTypes map[string]substancegen.GenObjectType, buff *bytes.Buffer) {
+	for _, object := range gqlObjectTypes {
+		for _, propVal := range object.Properties {
+			if propVal.IsObjectType {
+				propVal.AltScalarType["gqlschema"] = propVal.ScalarType
+			} else {
+				propVal.AltScalarType["gqlschema"] = graphqlDataTypes[propVal.ScalarType]
+			}
+		}
+	}
+
+	tmpl := template.New("graphqlSchemaInputTypes")
+	tmpl, err := tmpl.Parse(graphqlSchemaInputTypesTemplate)
 	if err != nil {
 		log.Fatal("Parse: ", err)
 		return

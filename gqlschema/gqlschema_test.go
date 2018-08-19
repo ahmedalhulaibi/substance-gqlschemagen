@@ -54,7 +54,7 @@ func TestOutputGraphqlSchemaFunc(t *testing.T) {
 	}
 }
 
-func TestGenerateGraphqlGetQueriesFunc(t *testing.T) {
+func TestGenerateGraphqlInputSchemaTypesFunc(t *testing.T) {
 	var buff bytes.Buffer
 	newGenObjType := substancegen.GenObjectType{Name: "Customer", LowerName: "customer", SourceTableName: "Customers"}
 	newGenObjType.Properties = make(substancegen.GenObjectProperties)
@@ -85,6 +85,67 @@ func TestGenerateGraphqlGetQueriesFunc(t *testing.T) {
 	newGenObjType.Properties["ShoppingList"].Tags["json"] = append(newGenObjType.Properties["ShoppingList"].Tags["json"], "shoppingList")
 	genObjMap := make(map[string]substancegen.GenObjectType)
 	genObjMap["Customers"] = newGenObjType
+
+	GenerateGraphqlInputSchemaTypes(genObjMap, &buff)
+
+	var expectedBuff bytes.Buffer
+
+	expectedBuff.WriteString(`input InputCustomer { 
+	FirstName: String!
+	ShoppingList: [String]!
+}
+`)
+
+	if buff.String() != expectedBuff.String() {
+		t.Errorf("Expected\n\n'%v'\n\nReceived\n\n'%v'\n\n", expectedBuff, buff)
+	}
+}
+
+func TestGenerateGraphqlGetQueriesFunc(t *testing.T) {
+	var buff bytes.Buffer
+	newGenObjType := substancegen.GenObjectType{Name: "Customer", LowerName: "customer", SourceTableName: "Customers"}
+	newGenObjType.Properties = make(substancegen.GenObjectProperties)
+	newGenObjType.Properties["FirstName"] = &substancegen.GenObjectProperty{
+		IsList:          false,
+		IsObjectType:    false,
+		KeyType:         []string{"PRIMARY KEY"},
+		ScalarName:      "FirstName",
+		ScalarNameUpper: "FirstName",
+		ScalarType:      "string",
+		AltScalarType:   make(map[string]string),
+		Nullable:        false,
+	}
+	newGenObjType.Properties["FirstName"].Tags = make(substancegen.GenObjectTag)
+	newGenObjType.Properties["FirstName"].Tags["json"] = append(newGenObjType.Properties["FirstName"].Tags["json"], "firstName")
+
+	newGenObjType.Properties["ShoppingList"] = &substancegen.GenObjectProperty{
+		IsList:          true,
+		IsObjectType:    false,
+		KeyType:         []string{""},
+		ScalarName:      "ShoppingList",
+		ScalarNameUpper: "ShoppingList",
+		ScalarType:      "string",
+		AltScalarType:   make(map[string]string),
+		Nullable:        false,
+	}
+	newGenObjType.Properties["ShoppingList"].Tags = make(substancegen.GenObjectTag)
+	newGenObjType.Properties["ShoppingList"].Tags["json"] = append(newGenObjType.Properties["ShoppingList"].Tags["json"], "shoppingList")
+
+	newGenObjType.Properties["Toilet"] = &substancegen.GenObjectProperty{
+		IsList:          false,
+		IsObjectType:    true,
+		KeyType:         []string{""},
+		ScalarName:      "Toilet",
+		ScalarNameUpper: "Toilet",
+		ScalarType:      "Toilet",
+		AltScalarType:   make(map[string]string),
+		Nullable:        false,
+	}
+	newGenObjType.Properties["Toilet"].Tags = make(substancegen.GenObjectTag)
+	newGenObjType.Properties["Toilet"].Tags["json"] = append(newGenObjType.Properties["Toilet"].Tags["json"], "toilet")
+
+	genObjMap := make(map[string]substancegen.GenObjectType)
+	genObjMap["Customers"] = newGenObjType
 	GenerateGraphqlGetQueries(genObjMap, &buff)
 
 	var expectedBuff bytes.Buffer
@@ -93,7 +154,7 @@ func TestGenerateGraphqlGetQueriesFunc(t *testing.T) {
 	# Customer returns first Customer in database table
 	Customer: Customer
 	# GetCustomer takes the properties of Customer as search parameters. It will return all Customer rows found that matches the search criteria. Null input paramters are valid.
-	GetCustomer(FirstName: String, ShoppingList: [String]): [Customer]
+	GetCustomer(FirstName: String, ShoppingList: [String], Toilet: InputToilet): [Customer]
 `)
 
 	if buff.String() != expectedBuff.String() {
