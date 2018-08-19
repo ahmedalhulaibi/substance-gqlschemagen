@@ -64,14 +64,21 @@ func main() {
 	if objects != nil {
 		log.Println("printing objects")
 		log.Println(objects)
-		var outputBuff bytes.Buffer
-		gqlschema.GenerateGraphqlSchemaTypes(objects, &outputBuff)
+
+		var outputBuff1 bytes.Buffer
+		gqlschema.GenerateGraphqlSchemaTypes(objects, &outputBuff1)
+
 		var outputBuff2 bytes.Buffer
-		gqlschema.GenerateGraphqlQueries(objects, &outputBuff2)
-		err := ioutil.WriteFile(*outputSrcFilePath, append(outputBuff.Bytes(), outputBuff2.Bytes()...), 0664)
+		gqlschema.GenerateGraphqlSchemaInputTypes(objects, &outputBuff2)
+
+		var outputBuff3 bytes.Buffer
+		gqlschema.GenerateGraphqlQueries(objects, &outputBuff3)
+
+		outputBuff := append(outputBuff1.Bytes(), append(outputBuff2.Bytes(), outputBuff3.Bytes()...)...)
+		err := ioutil.WriteFile(*outputSrcFilePath, outputBuff, 0664)
 		if err != nil {
 			fmt.Printf(helpText)
-			fmt.Printf(outputBuff.String())
+			fmt.Printf(outputBuff1.String())
 		}
 	}
 }
