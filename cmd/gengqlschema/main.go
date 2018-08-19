@@ -67,7 +67,7 @@ func main() {
 		var outputBuff bytes.Buffer
 		gqlschema.GenerateGraphqlSchemaTypes(objects, &outputBuff)
 		var outputBuff2 bytes.Buffer
-		gqlschema.GenerateGraphqlGetQueries(objects, &outputBuff2)
+		gqlschema.GenerateGraphqlQueries(objects, &outputBuff2)
 		err := ioutil.WriteFile(*outputSrcFilePath, append(outputBuff.Bytes(), outputBuff2.Bytes()...), 0664)
 		if err != nil {
 			fmt.Printf(helpText)
