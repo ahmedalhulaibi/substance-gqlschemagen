@@ -86,7 +86,7 @@ func TestGenerateGraphqlInputSchemaTypesFunc(t *testing.T) {
 	genObjMap := make(map[string]substancegen.GenObjectType)
 	genObjMap["Customers"] = newGenObjType
 
-	GenerateGraphqlInputSchemaTypes(genObjMap, &buff)
+	GenerateGraphqlSchemaInputTypes(genObjMap, &buff)
 
 	var expectedBuff bytes.Buffer
 

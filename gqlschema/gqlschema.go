@@ -65,8 +65,8 @@ func GenerateGraphqlSchemaTypes(gqlObjectTypes map[string]substancegen.GenObject
 	}
 }
 
-/*GenerateGraphqlInputSchemaTypes generates graphql input types in graphql sstandard syntax*/
-func GenerateGraphqlInputSchemaTypes(gqlObjectTypes map[string]substancegen.GenObjectType, buff *bytes.Buffer) {
+/*GenerateGraphqlSchemaInputTypes generates graphql input types in graphql sstandard syntax*/
+func GenerateGraphqlSchemaInputTypes(gqlObjectTypes map[string]substancegen.GenObjectType, buff *bytes.Buffer) {
 	for _, object := range gqlObjectTypes {
 		for _, propVal := range object.Properties {
 			if propVal.IsObjectType {
