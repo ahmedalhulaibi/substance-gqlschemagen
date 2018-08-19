@@ -1,0 +1,7 @@
+models:
+  AntiOrder:
+    model: github.com/ahmedalhulaibi/substance-gqlschemagen/example/gqlgen/model.AntiOrder
+  Order:
+    model: github.com/ahmedalhulaibi/substance-gqlschemagen/example/gqlgen/model.Order
+  Person:
+    model: github.com/ahmedalhulaibi/substance-gqlschemagen/example/gqlgen/model.Person
